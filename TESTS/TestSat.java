@@ -12,7 +12,7 @@ public class TestSat {
     for (int i = 0; i < 1000; i++) {
       long startTime = System.nanoTime();
       Satisfiablility sat = new Satisfiablility("2 3, -4 5");
-      assertEquals(sat.cnf_sat(sat.allClauses), sat.cnf_sat(sat.allClauses));
+      assertEquals(sat.sat(sat.allClauses), sat.sat(sat.allClauses));
       long endTime = System.nanoTime();
       long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
       System.out.println("Execution Time (Milliseconds): " + duration);

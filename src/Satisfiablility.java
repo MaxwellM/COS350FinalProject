@@ -49,7 +49,7 @@ public class Satisfiablility {
     return abs(minimum);
   }
 
-  public boolean allClausesLengthOneAndVariablesEqual(LinkedList<LinkedList<Integer>> clauses) {
+  public boolean allLengthOneAndEqual(LinkedList<LinkedList<Integer>> clauses) {
     boolean allLengthSizeOne = true;
     boolean allEqualSize = true;
     int beginning = abs(clauses.peek().peek());
@@ -64,53 +64,59 @@ public class Satisfiablility {
   }
 
 
-  public boolean cnf_sat(LinkedList<LinkedList<Integer>> clauses) {
+  public boolean sat(LinkedList<LinkedList<Integer>> clauses) {
     /* Copy allClauses */
     LinkedList<LinkedList<Integer>> cloneClauses = clauses.stream().map(clause -> (LinkedList<Integer>) clause.clone()).collect(Collectors.toCollection(LinkedList::new));
-    return cnf_satZero(cloneClauses) || cnf_satOne(clauses);
+    return satZero(cloneClauses) || satOne(clauses);
   }
 
   /**
    * SecondAnker: When there is only 1 variable pro clause, and all variables are equal
-   * if all negative -> SAT when last variable = 0 (could also be 1)
-   * if all positive -> SAT when last variable = 1 (could also be 0)
+   * if all neg is SAT when last variable = 0 (could also be 1)
+   * if all pos is SAT when last variable = 1 (could also be 0)
    * else no SAT
    */
-  public boolean secondAnker(int oneOrZero, LinkedList<LinkedList<Integer>> clauses) {
-    boolean all_positive = clauses.peek().peek() > 0;
-    boolean all_negative = clauses.peek().peek() < 0;
-    int zeroOrOne = (oneOrZero == 1) ? 1 : 0;
+  public boolean ankerTwo(int oneOrZero, LinkedList<LinkedList<Integer>> clauses) {
+    boolean allPos = clauses.peek().peek() > 0;
+    boolean allNeg = clauses.peek().peek() < 0;
+    int zeroOrOne;
+    if (oneOrZero == 1) {
+      zeroOrOne = 1;
+    }
+    else {
+      zeroOrOne = 0;
+    }
     int i = 1;
     while (i < clauses.size()) {
-      all_positive &= clauses.get(i).peek() > 0;
-      all_negative &= clauses.get(i).peek() > 0;
+      allPos &= clauses.get(i).peek() > 0;
+      allNeg &= clauses.get(i).peek() > 0;
       i++;
     }
-    if (all_positive) {
+    if (allPos) {
       System.out.println("Last variable is 1.");
     }
-    else if (all_negative) {
+    else if (allNeg) {
       System.out.println("Last variable is 0.");
     }
     else {
-      System.out.println("When replacing with " + zeroOrOne + ", CNF is not SAT\n");
+      System.out.println("When replacing with " + zeroOrOne + ", Is not SAT\n");
     }
-    return all_positive || all_negative;
+    return (allPos || allNeg);
   }
 
   // replace variables with value 1.
-  public boolean cnf_satOne(LinkedList<LinkedList<Integer>> clauses) {
+  public boolean satOne(LinkedList<LinkedList<Integer>> clauses) {
     if (clauses.isEmpty()) {
-      System.out.println("CNF is SAT, remaining variables can either be TRUE or FALSE.");
+      System.out.println("Is SAT, remaining variables can either be TRUE or FALSE.");
       return true;
     }
-    else if (allClausesLengthOneAndVariablesEqual(clauses)) {
-      return secondAnker(1, clauses);
+    else if (allLengthOneAndEqual(clauses)) {
+      return ankerTwo(1, clauses);
     }
     else {
       int minVar = minimumVariable(clauses);
       int negMinVar = minVar * (-1);
-      System.out.println("CNF_SAT_ONE Variable x" + minVar + ": 1");
+      System.out.println("satOne Variable x" + minVar + ": 1");
       // Pos. variable->remove clause; Neg. variable->remove variable.
       int i = 0;
       while (i < clauses.size()) {
@@ -127,23 +133,23 @@ public class Satisfiablility {
         }
         i++;
       }
-      return cnf_satOne(clauses);
+      return satOne(clauses);
     }
   }
 
   // replace variables with value 0.
-  public boolean cnf_satZero(LinkedList<LinkedList<Integer>> clauses) {
+  public boolean satZero(LinkedList<LinkedList<Integer>> clauses) {
     if (clauses.isEmpty()) {
-      System.out.println("CNF is SAT, remaining variables can either be TRUE or FALSE.");
+      System.out.println("Is SAT, remaining variables can either be TRUE or FALSE.");
       return true;
     }
-    else if (allClausesLengthOneAndVariablesEqual(clauses)) {
-      return secondAnker(0, clauses);
+    else if (allLengthOneAndEqual(clauses)) {
+      return ankerTwo(0, clauses);
     }
     else {
       int minLit = minimumVariable(clauses);
       int negMinLit = minLit * (-1);
-      System.out.println("CNF_SAT_ZERO Variable x" + minLit + ": 0");
+      System.out.println("satZero Variable x" + minLit + ": 0");
       // Pos. variable->remove variable; Neg. variable->remove clause.
       int i = 0;
       while (i < clauses.size()) {
@@ -159,7 +165,7 @@ public class Satisfiablility {
           clauses.remove(i--);
         i++;
       }
-      return cnf_satZero(clauses);
+      return satZero(clauses);
     }
   }
 
@@ -167,6 +173,6 @@ public class Satisfiablility {
     /**Tests**/
     Satisfiablility formel = new Satisfiablility("2 3, -4 5");
     System.out.println(formel.allClauses);
-    formel.cnf_sat(formel.allClauses);
+    formel.sat(formel.allClauses);
   }
 }
