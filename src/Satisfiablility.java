@@ -4,12 +4,11 @@ import static java.lang.Math.abs;
 import static java.util.stream.Collectors.toCollection;
 
 public class Satisfiablility {
-  /**
-   * Variables have to be fed in ascending order (1,2,3..)
-   */
+
+  //Variables have to be fed in ascending order (1,2,3..)
   public final LinkedList<LinkedList<Integer>> allClauses = new LinkedList<>();
 
-  /* Constructor parses input string and initializes the allClauses */
+  // Constructor parses input string and initializes the allClauses //
   public Satisfiablility(String string) {
     allClauses.add(new LinkedList<>());// Initialize clause
     int thisClause = 0;
@@ -50,7 +49,7 @@ public class Satisfiablility {
   }
 
   public boolean sat(LinkedList<LinkedList<Integer>> clauses) {
-    /* Copy allClauses */
+    // Copy allClauses
     LinkedList<LinkedList<Integer>> cloneClauses = clauses.stream().map(clause -> (LinkedList<Integer>) clause.clone()).collect(toCollection(LinkedList::new));
     return satZero(cloneClauses) || satOne(clauses);
   }
@@ -70,12 +69,11 @@ public class Satisfiablility {
   }
 
 
-  /**
-   * SecondAnker: When there is only 1 variable pro clause, and all variables are equal
-   * if all neg is SAT when last variable = 0 (could also be 1)
-   * if all pos is SAT when last variable = 1 (could also be 0)
-   * else no SAT
-   */
+
+   // SecondAnker: When there is only 1 variable pro clause, and all variables are equal
+   // if all neg is SAT when last variable = 0 (could also be 1)
+   // if all pos is SAT when last variable = 1 (could also be 0)
+   // else no SAT
   public boolean ankerTwo(int oneOrZero, LinkedList<LinkedList<Integer>> clauses) {
     boolean allPos = clauses.peek().peek() > 0;
     boolean allNeg = clauses.peek().peek() < 0;
