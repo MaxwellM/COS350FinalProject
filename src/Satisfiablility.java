@@ -11,10 +11,10 @@ public class Satisfiablility {
    * -It is for max. 9 variables. It should be enough to test if it works.
    * *
    */
-  private final LinkedList<LinkedList<Integer>> clauses = new LinkedList<LinkedList<Integer>>();
+  public final LinkedList<LinkedList<Integer>> clauses = new LinkedList<LinkedList<Integer>>();
 
   /* Constructor parses input string and initializes the clauses */
-  private Satisfiablility(String s) {
+  public Satisfiablility(String s) {
     clauses.add(new LinkedList<Integer>());// Initialize clause
     int currentClause = 0;
     for (int i = 0; i < s.length(); i++) {
@@ -38,11 +38,11 @@ public class Satisfiablility {
     }
   }
 
-  private boolean isNumber(char c) {
+  public boolean isNumber(char c) {
     return ((int) c > 47 && (int) c < 58);
   }
 
-  private int minVariable(LinkedList<LinkedList<Integer>> clauses) {
+  public int minVariable(LinkedList<LinkedList<Integer>> clauses) {
     int min = clauses.peek().peek();
     for (LinkedList<Integer> clause : clauses) {
       min = (abs(clause.peek()) < abs(min)) ? clause.peek() : min;
@@ -50,7 +50,7 @@ public class Satisfiablility {
     return abs(min);
   }
 
-  private boolean allClausesLengthOneAndVariablesEqual(
+  public boolean allClausesLengthOneAndVariablesEqual(
       LinkedList<LinkedList<Integer>> clauses) {
     boolean allLengthOne = true;
     boolean allEqual = true;
@@ -62,7 +62,8 @@ public class Satisfiablility {
     return allLengthOne & allEqual;
   }
 
-  private boolean cnf_sat(LinkedList<LinkedList<Integer>> clauses) {
+
+  public boolean cnf_sat(LinkedList<LinkedList<Integer>> clauses) {
     /* First: Clone clauses */
     LinkedList<LinkedList<Integer>> cloneClauses = new LinkedList<LinkedList<Integer>>();
     for (LinkedList<Integer> clause : clauses) {
@@ -79,7 +80,7 @@ public class Satisfiablility {
    * else ->no SAT
    * *
    */
-  private boolean secondAnker(int oneOrZero, LinkedList<LinkedList<Integer>> clauses) {
+  public boolean secondAnker(int oneOrZero, LinkedList<LinkedList<Integer>> clauses) {
     boolean all_positive = clauses.peek().peek() > 0;
     boolean all_negative = clauses.peek().peek() < 0;
     int zeroOrOne = (oneOrZero == 1) ? 1 : 0;
@@ -102,7 +103,7 @@ public class Satisfiablility {
   }
 
   // replace variables with value 1.
-  private boolean cnf_satOne(LinkedList<LinkedList<Integer>> clauses) {
+  public boolean cnf_satOne(LinkedList<LinkedList<Integer>> clauses) {
     if (clauses.isEmpty()) {
       System.out.println("CNF is SAT, remaining variables can either be TRUE or FALSE.");
       return true;
@@ -132,7 +133,7 @@ public class Satisfiablility {
   }
 
   // replace variables with value 0.
-  private boolean cnf_satZero(LinkedList<LinkedList<Integer>> clauses) {
+  public boolean cnf_satZero(LinkedList<LinkedList<Integer>> clauses) {
     if (clauses.isEmpty()) {
       System.out.println("CNF is SAT, remaining variables can either be TRUE or FALSE.");
       return true;
