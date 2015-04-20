@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by Maxwell on 4/20/2015.
  */
@@ -118,8 +120,7 @@ public class TestLCS {
   public void testLCS() {
     for (int i = 0; i < 1000; i++) {
       long startTime = System.nanoTime();
-      LongestCommonSubstring lcs = new LongestCommonSubstring();
-      lcs.longestCommonSubstring(query.toCharArray(), text.toCharArray());
+      assertEquals(LongestCommonSubstring.longestCommonSubstring(query.toCharArray(), text.toCharArray()),LongestCommonSubstring.longestCommonSubstring(query.toCharArray(), text.toCharArray()));
       long endTime = System.nanoTime();
       long duration = (endTime - startTime);  //divide by 1000000 to get milliseconds.
       System.out.println("Execution Time (Milliseconds): " + duration);
