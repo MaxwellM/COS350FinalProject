@@ -1,7 +1,7 @@
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.LinkedList;
 
 import static java.lang.Math.abs;
+import static java.util.stream.Collectors.toCollection;
 
 public class Satisfiablility {
   /**
@@ -34,10 +34,6 @@ public class Satisfiablility {
     }
   }
 
-  public boolean isItANumber(char c) {
-    return ((int) c > 47 && (int) c < 58);
-  }
-
   public int minimumVariable(LinkedList<LinkedList<Integer>> clauses) {
     int minimum = clauses.peek().peek();
     int i = 0, clausesSize = clauses.size();
@@ -47,6 +43,16 @@ public class Satisfiablility {
       i++;
     }
     return abs(minimum);
+  }
+
+  public boolean isItANumber(char c) {
+    return ((int) c > 47 && (int) c < 58);
+  }
+
+  public boolean sat(LinkedList<LinkedList<Integer>> clauses) {
+    /* Copy allClauses */
+    LinkedList<LinkedList<Integer>> cloneClauses = clauses.stream().map(clause -> (LinkedList<Integer>) clause.clone()).collect(toCollection(LinkedList::new));
+    return satZero(cloneClauses) || satOne(clauses);
   }
 
   public boolean allLengthOneAndEqual(LinkedList<LinkedList<Integer>> clauses) {
@@ -63,12 +69,6 @@ public class Satisfiablility {
     return allLengthSizeOne & allEqualSize;
   }
 
-
-  public boolean sat(LinkedList<LinkedList<Integer>> clauses) {
-    /* Copy allClauses */
-    LinkedList<LinkedList<Integer>> cloneClauses = clauses.stream().map(clause -> (LinkedList<Integer>) clause.clone()).collect(Collectors.toCollection(LinkedList::new));
-    return satZero(cloneClauses) || satOne(clauses);
-  }
 
   /**
    * SecondAnker: When there is only 1 variable pro clause, and all variables are equal
@@ -171,8 +171,8 @@ public class Satisfiablility {
 
   public static void main(String[] args) {
     /**Tests**/
-    Satisfiablility formel = new Satisfiablility("2 3, -4 5");
-    System.out.println(formel.allClauses);
-    formel.sat(formel.allClauses);
+    Satisfiablility formula = new Satisfiablility("2 3, -4 5");
+    System.out.println(formula.allClauses);
+    formula.sat(formula.allClauses);
   }
 }
